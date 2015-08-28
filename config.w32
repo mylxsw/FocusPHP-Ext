@@ -1,0 +1,13 @@
+// $Id$
+// vim:ft=javascript
+
+// If your extension references something external, use ARG_WITH
+// ARG_WITH("focusphp", "for focusphp support", "no");
+
+// Otherwise, use ARG_ENABLE
+// ARG_ENABLE("focusphp", "enable focusphp support", "no");
+
+if (PHP_FOCUSPHP != "no") {
+	EXTENSION("focusphp", "focusphp.c");
+}
+

@@ -13,9 +13,8 @@ dnl [  --with-focusphp             Include focusphp support])
 
 dnl Otherwise use enable:
 
-dnl PHP_ARG_ENABLE(focusphp, whether to enable focusphp support,
-dnl Make sure that the comment is aligned:
-dnl [  --enable-focusphp           Enable focusphp support])
+PHP_ARG_ENABLE(focusphp, whether to enable focusphp support,
+[  --enable-focusphp           Enable focusphp support])
 
 if test "$PHP_FOCUSPHP" != "no"; then
   dnl Write more examples of tests here...
@@ -57,7 +56,7 @@ if test "$PHP_FOCUSPHP" != "no"; then
   dnl   -L$FOCUSPHP_DIR/$PHP_LIBDIR -lm
   dnl ])
   dnl
-  dnl PHP_SUBST(FOCUSPHP_SHARED_LIBADD)
+  PHP_SUBST(FOCUSPHP_SHARED_LIBADD)
 
   PHP_NEW_EXTENSION(focusphp, focusphp.c, $ext_shared)
 fi

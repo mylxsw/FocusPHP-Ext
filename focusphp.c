@@ -44,27 +44,24 @@ PHP_INI_END()
 */
 /* }}} */
 
-/* Remove the following function when you have successfully modified config.m4
-   so that your module can be compiled into PHP, it exists only for testing
-   purposes. */
-
-/* Every user-visible function in PHP should document itself in the source */
-/* {{{ proto string confirm_focusphp_compiled(string arg)
-   Return a string to confirm that the module is compiled in */
-PHP_FUNCTION(confirm_focusphp_compiled)
+/* {{{ proto string focusphp_demo(string arg)
+   Return a Hello world string to user */
+PHP_FUNCTION(focusphp_demo)
 {
 	char *arg = NULL;
 	int arg_len, len;
 	char *strg;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &arg, &arg_len) == FAILURE) {
-		return;
+		return ;
 	}
 
-	len = spprintf(&strg, 0, "Congratulations! You have successfully modified ext/%.78s/config.m4. Module %.78s is now compiled into PHP.", "focusphp", arg);
+	len = spprintf(&strg, 0, "Hello, %s", arg);
 	RETURN_STRINGL(strg, len, 0);
 }
 /* }}} */
+
+
 /* The previous line is meant for vim and emacs, so it can correctly fold and 
    unfold functions in source code. See the corresponding marks just before 
    function definition, where the functions purpose is also documented. Please 
@@ -142,7 +139,8 @@ PHP_MINFO_FUNCTION(focusphp)
  * Every user visible function must have an entry in focusphp_functions[].
  */
 const zend_function_entry focusphp_functions[] = {
-	PHP_FE(confirm_focusphp_compiled,	NULL)		/* For testing, remove later. */
+	PHP_FE(focusphp_demo,	NULL)
+	PHP_FALIAS(Focus\\demo, focusphp_demo, NULL)
 	PHP_FE_END	/* Must be the last line in focusphp_functions[] */
 };
 /* }}} */

@@ -64,7 +64,11 @@ ZEND_END_MODULE_GLOBALS(focusphp)
 #define FOCUSPHP_G(v) (focusphp_globals.v)
 #endif
 
+zend_class_entry *php_focusphp_server_entry;
+zend_class_entry *php_focusphp_focus_interface;
+
 PHP_FUNCTION(focusphp_demo);
+PHP_METHOD(FOCUS_SERVER, run);
 
 #endif	/* PHP_FOCUSPHP_H */
 

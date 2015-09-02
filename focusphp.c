@@ -34,6 +34,20 @@ ZEND_DECLARE_MODULE_GLOBALS(focusphp)
 /* True global resources - no need for thread safety here */
 static int le_focusphp;
 
+ZEND_BEGIN_ARG_INFO_EX(focus_interface_params, 0, 0, 0)
+	ZEND_ARG_INFO(0, params)
+ZEND_END_ARG_INFO()
+
+const zend_function_entry focusphp_server_function[] = {
+	PHP_ME(FOCUS_SERVER, run, focus_interface_params, ZEND_ACC_PUBLIC)
+	PHP_FE_END
+};
+
+const zend_function_entry focusphp_focus_interface_function[] = {
+	PHP_ABSTRACT_ME(Focus\\Focus, run, focus_interface_params)
+	PHP_FE_END
+};
+
 /* {{{ PHP_INI
  */
 /* Remove comments and fill if you need to have entries in php.ini
@@ -61,6 +75,19 @@ PHP_FUNCTION(focusphp_demo)
 }
 /* }}} */
 
+PHP_METHOD(FOCUS_SERVER, run)
+{
+	char *name, *hello_str;
+	int name_len, hello_str_len;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &name, &name_len) == FAILURE) {
+		RETURN_NULL();
+	}
+
+	hello_str_len = spprintf(&hello_str, 0, "Hello, %s\n", name);
+	RETURN_STRINGL(hello_str, hello_str_len, 0);
+}
+
 
 /* The previous line is meant for vim and emacs, so it can correctly fold and 
    unfold functions in source code. See the corresponding marks just before 
@@ -87,6 +114,25 @@ PHP_MINIT_FUNCTION(focusphp)
 	/* If you have INI entries, uncomment these lines 
 	REGISTER_INI_ENTRIES();
 	*/
+	zend_class_entry temp_focus_ce;
+	INIT_CLASS_ENTRY(temp_focus_ce, "Focus\\Focus", focusphp_focus_interface_function);
+
+	php_focusphp_focus_interface = zend_register_internal_class(&temp_focus_ce TSRMLS_CC);
+	php_focusphp_focus_interface->ce_flags |= ZEND_ACC_INTERFACE;
+
+	zend_class_entry temp_ce;
+	INIT_CLASS_ENTRY(temp_ce, "Focus\\Server", focusphp_server_function);
+
+	php_focusphp_server_entry = zend_register_internal_class(&temp_ce TSRMLS_CC);
+	zend_class_implements(php_focusphp_server_entry TSRMLS_CC, 1, php_focusphp_focus_interface);
+	zend_declare_property_string(
+		php_focusphp_server_entry, 
+		"VERSION", 
+		sizeof("VERSION") - 1, 
+		"1.0.0", 
+		ZEND_ACC_PUBLIC TSRMLS_CC
+	);
+
 	return SUCCESS;
 }
 /* }}} */

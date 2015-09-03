@@ -69,6 +69,8 @@ zend_class_entry *php_focusphp_focus_interface;
 */
 // PHP_FUNCTION(focusphp_demo);
 
+zend_class_entry *focusphp_focus_interface;
+
 #define FOCUS_STARTUP_FUNCTION(module)  ZEND_MINIT_FUNCTION(focusphp_##module)
 #define FOCUS_RINIT_FUNCTION(module)    ZEND_RINIT_FUNCTION(focusphp_##module)
 #define FOCUS_STARTUP(module)           ZEND_MODULE_STARTUP_N(focusphp_##module)(INIT_FUNC_ARGS_PASSTHRU)

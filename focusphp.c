@@ -49,6 +49,10 @@ const zend_function_entry focusphp_focus_interface_function[] = {
 	PHP_FE_END
 };*/
 
+const zend_function_entry focusphp_focus_interface_functions[] = {
+	PHP_FE_END
+};
+
 /* {{{ PHP_INI
  */
 /* Remove comments and fill if you need to have entries in php.ini
@@ -133,6 +137,12 @@ PHP_MINIT_FUNCTION(focusphp)
 		sizeof("VERSION") - 1, 
 		"1.0.0" TSRMLS_CC
 	);*/
+
+	zend_class_entry *temp_ce;
+	INIT_CLASS_ENTRY(temp_ce, "Focus\\Focus", focusphp_focus_interface_functions);
+
+	focusphp_focus_interface = zend_register_internal_class(&temp_ce TSRMLS_CC);
+	focusphp_focus_interface->ce_flags |= ZEND_ACC_INTERFACE;
 
 	FOCUS_STARTUP(server);
 

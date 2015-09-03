@@ -63,12 +63,18 @@ ZEND_END_MODULE_GLOBALS(focusphp)
 #else
 #define FOCUSPHP_G(v) (focusphp_globals.v)
 #endif
-
+/*
 zend_class_entry *php_focusphp_server_entry;
 zend_class_entry *php_focusphp_focus_interface;
+*/
+// PHP_FUNCTION(focusphp_demo);
 
-PHP_FUNCTION(focusphp_demo);
-PHP_METHOD(FOCUS_SERVER, run);
+#define FOCUS_STARTUP_FUNCTION(module)  ZEND_MINIT_FUNCTION(focusphp_##module)
+#define FOCUS_RINIT_FUNCTION(module)    ZEND_RINIT_FUNCTION(focusphp_##module)
+#define FOCUS_STARTUP(module)           ZEND_MODULE_STARTUP_N(focusphp_##module)(INIT_FUNC_ARGS_PASSTHRU)
+#define FOCUS_SHUTDOWN_FUNCTION(module) ZEND_MSHUTDOWN_FUNCTION(focusphp_##module)
+#define FOCUS_SHUTDOWN(module)          ZEND_MODULE_SHUTDOWN_N(focusphp_##module)(INIT_FUNC_ARGS_PASSTHRU)
+
 
 #endif	/* PHP_FOCUSPHP_H */
 

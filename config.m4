@@ -58,5 +58,5 @@ if test "$PHP_FOCUSPHP" != "no"; then
   dnl
   PHP_SUBST(FOCUSPHP_SHARED_LIBADD)
 
-  PHP_NEW_EXTENSION(focusphp, focusphp.c, $ext_shared)
+  PHP_NEW_EXTENSION(focusphp, focusphp.c server.c, $ext_shared)
 fi

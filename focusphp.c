@@ -26,6 +26,7 @@
 #include "php_ini.h"
 #include "ext/standard/info.h"
 #include "php_focusphp.h"
+#include "server.h"
 
 /* If you declare any globals in php_focusphp.h uncomment this:
 ZEND_DECLARE_MODULE_GLOBALS(focusphp)
@@ -34,7 +35,7 @@ ZEND_DECLARE_MODULE_GLOBALS(focusphp)
 /* True global resources - no need for thread safety here */
 static int le_focusphp;
 
-ZEND_BEGIN_ARG_INFO_EX(focus_interface_params, 0, 0, 0)
+/*ZEND_BEGIN_ARG_INFO_EX(focus_interface_params, 0, 0, 0)
 	ZEND_ARG_INFO(0, params)
 ZEND_END_ARG_INFO()
 
@@ -46,7 +47,7 @@ const zend_function_entry focusphp_server_function[] = {
 const zend_function_entry focusphp_focus_interface_function[] = {
 	PHP_ABSTRACT_ME(Focus\\Focus, run, focus_interface_params)
 	PHP_FE_END
-};
+};*/
 
 /* {{{ PHP_INI
  */
@@ -60,21 +61,22 @@ PHP_INI_END()
 
 /* {{{ proto string focusphp_demo(string arg)
    Return a Hello world string to user */
-PHP_FUNCTION(focusphp_demo)
-{
-	char *arg = NULL;
-	int arg_len, len;
-	char *strg;
+// PHP_FUNCTION(focusphp_demo)
+// {
+// 	char *arg = NULL;
+// 	int arg_len, len;
+// 	char *strg;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &arg, &arg_len) == FAILURE) {
-		return ;
-	}
+// 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &arg, &arg_len) == FAILURE) {
+// 		return ;
+// 	}
 
-	len = spprintf(&strg, 0, "Hello, %s", arg);
-	RETURN_STRINGL(strg, len, 0);
-}
+// 	len = spprintf(&strg, 0, "Hello, %s", arg);
+// 	RETURN_STRINGL(strg, len, 0);
+// }
 /* }}} */
 
+/*
 PHP_METHOD(FOCUS_SERVER, run)
 {
 	char *name, *hello_str;
@@ -87,7 +89,7 @@ PHP_METHOD(FOCUS_SERVER, run)
 	hello_str_len = spprintf(&hello_str, 0, "Hello, %s\n", name);
 	RETURN_STRINGL(hello_str, hello_str_len, 0);
 }
-
+*/
 
 /* The previous line is meant for vim and emacs, so it can correctly fold and 
    unfold functions in source code. See the corresponding marks just before 
@@ -114,7 +116,7 @@ PHP_MINIT_FUNCTION(focusphp)
 	/* If you have INI entries, uncomment these lines 
 	REGISTER_INI_ENTRIES();
 	*/
-	zend_class_entry temp_focus_ce;
+/*	zend_class_entry temp_focus_ce;
 	INIT_CLASS_ENTRY(temp_focus_ce, "Focus\\Focus", focusphp_focus_interface_function);
 
 	php_focusphp_focus_interface = zend_register_internal_class(&temp_focus_ce TSRMLS_CC);
@@ -125,13 +127,14 @@ PHP_MINIT_FUNCTION(focusphp)
 
 	php_focusphp_server_entry = zend_register_internal_class(&temp_ce TSRMLS_CC);
 	zend_class_implements(php_focusphp_server_entry TSRMLS_CC, 1, php_focusphp_focus_interface);
-	zend_declare_property_string(
+	zend_declare_class_constant_string(
 		php_focusphp_server_entry, 
 		"VERSION", 
 		sizeof("VERSION") - 1, 
-		"1.0.0", 
-		ZEND_ACC_PUBLIC TSRMLS_CC
-	);
+		"1.0.0" TSRMLS_CC
+	);*/
+
+	FOCUS_STARTUP(server);
 
 	return SUCCESS;
 }
@@ -185,8 +188,8 @@ PHP_MINFO_FUNCTION(focusphp)
  * Every user visible function must have an entry in focusphp_functions[].
  */
 const zend_function_entry focusphp_functions[] = {
-	PHP_FE(focusphp_demo,	NULL)
-	PHP_FALIAS(Focus\\demo, focusphp_demo, NULL)
+	// PHP_FE(focusphp_demo,	NULL)
+	// PHP_FALIAS(Focus\\demo, focusphp_demo, NULL)
 	PHP_FE_END	/* Must be the last line in focusphp_functions[] */
 };
 /* }}} */

@@ -7,6 +7,7 @@
 #include "php_ini.h"
 
 #include "php_focusphp.h"
+#include "container.h"
 #include "server.h"
 
 zend_class_entry *focusphp_server_ce;
@@ -44,19 +45,53 @@ ZEND_BEGIN_ARG_INFO_EX(server_set_not_found_router_arginfo, 0, 0, 1)
 	ZEND_ARG_OBJ_INFO(0, notFoundRouter, Focus\\Router\\NotFoundRouter, 1)
 ZEND_END_ARG_INFO()
 
-PHP_METHOD(server, __construct)
-{
 
+zval* focus_server_instance(zval *container)
+{
+	zval *instance = zend_read_static_property(focusphp_server_ce, ZEND_STRL("_instance"), 1 TSRMLS_CC);
+	if (Z_TYPE_P(instance) != IS_OBJECT || !instanceof_function(Z_OBJCE_P(instance), focusphp_server_ce TSRMLS_CC)) {
+
+		MAKE_STD_ZVAL(instance);
+		object_init_ex(instance, focusphp_server_ce);
+
+		zend_update_static_property(focusphp_server_ce, ZEND_STRL("_instance"), instance TSRMLS_CC);
+		zval_ptr_dtor(&instance);
+
+		if (Z_TYPE_P(container) != IS_OBJECT || !instanceof_function(Z_OBJCE_P(container), focusphp_container_ce TSRMLS_CC)) {
+			container = focus_container_instance();
+		}
+		zend_update_property(focusphp_server_ce, instance, ZEND_STRL("_container"), container TSRMLS_CC);
+	}
+
+	return instance;
 }
+
+
+void focus_server_run()
+{
+	zval *instance, *container;
+	instance = focus_server_instance(NULL);
+
+	container = zend_read_property(focusphp_server_ce, instance, ZEND_STRL("_container"), 1 TSRMLS_CC);
+	php_printf("Key: %s\n", focus_container_get(container, ZEND_STRL("hello")));
+}
+
+PHP_METHOD(server, __construct) {}
 
 PHP_METHOD(server, init)
 {
+	zval *container;
 
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|z", &container) == FAILURE) {
+		return ;
+	}
+
+	RETVAL_ZVAL(focus_server_instance(container), 1, 0);
 }
 
 PHP_METHOD(server, run)
 {
-
+	focus_server_run();
 }
 
 PHP_METHOD(server, registerRouter)

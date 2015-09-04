@@ -71,11 +71,8 @@ zend_class_entry *php_focusphp_focus_interface;
 
 zend_class_entry *focusphp_focus_interface;
 
-#define FOCUS_STARTUP_FUNCTION(module)  ZEND_MINIT_FUNCTION(focusphp_##module)
-#define FOCUS_RINIT_FUNCTION(module)    ZEND_RINIT_FUNCTION(focusphp_##module)
-#define FOCUS_STARTUP(module)           ZEND_MODULE_STARTUP_N(focusphp_##module)(INIT_FUNC_ARGS_PASSTHRU)
-#define FOCUS_SHUTDOWN_FUNCTION(module) ZEND_MSHUTDOWN_FUNCTION(focusphp_##module)
-#define FOCUS_SHUTDOWN(module)          ZEND_MODULE_SHUTDOWN_N(focusphp_##module)(INIT_FUNC_ARGS_PASSTHRU)
+#define FOCUS_STARTUP_FUNCTION(module)  int focusphp_module_start_##module()
+#define FOCUS_STARTUP(module)           focusphp_module_start_##module()
 
 
 #endif	/* PHP_FOCUSPHP_H */

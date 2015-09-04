@@ -25,7 +25,12 @@
 #include "php.h"
 #include "php_ini.h"
 #include "ext/standard/info.h"
+
 #include "php_focusphp.h"
+#include "container.h"
+#include "router.h"
+#include "router/not_found_router.h"
+
 #include "server.h"
 
 /* If you declare any globals in php_focusphp.h uncomment this:
@@ -113,6 +118,17 @@ static void php_focusphp_init_globals(zend_focusphp_globals *focusphp_globals)
 */
 /* }}} */
 
+int register_focus_interface()
+{
+	zend_class_entry temp_ce;
+	INIT_CLASS_ENTRY(temp_ce, "Focus\\Focus", focusphp_focus_interface_functions);
+
+	focusphp_focus_interface = zend_register_internal_class(&temp_ce TSRMLS_CC);
+	focusphp_focus_interface->ce_flags |= ZEND_ACC_INTERFACE;
+
+	return SUCCESS;
+}
+
 /* {{{ PHP_MINIT_FUNCTION
  */
 PHP_MINIT_FUNCTION(focusphp)
@@ -138,11 +154,11 @@ PHP_MINIT_FUNCTION(focusphp)
 		"1.0.0" TSRMLS_CC
 	);*/
 
-	zend_class_entry *temp_ce;
-	INIT_CLASS_ENTRY(temp_ce, "Focus\\Focus", focusphp_focus_interface_functions);
+	register_focus_interface();
 
-	focusphp_focus_interface = zend_register_internal_class(&temp_ce TSRMLS_CC);
-	focusphp_focus_interface->ce_flags |= ZEND_ACC_INTERFACE;
+	FOCUS_STARTUP(router);
+	FOCUS_STARTUP(container);
+	FOCUS_STARTUP(not_found_router);
 
 	FOCUS_STARTUP(server);
 

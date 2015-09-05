@@ -69,11 +69,13 @@ zval* focus_server_instance(zval *container)
 
 void focus_server_run()
 {
-	zval *instance, *container;
+	zval *instance, *container, *result;
+
 	instance = focus_server_instance(NULL);
 
 	container = zend_read_property(focusphp_server_ce, instance, ZEND_STRL("_container"), 1 TSRMLS_CC);
-	php_printf("Key: %s\n", focus_container_get(container, ZEND_STRL("hello")));
+	result = focus_container_get(container, ZEND_STRL("hello"));
+	php_printf("Key: %s\n", Z_STRVAL_P(result));
 }
 
 PHP_METHOD(server, __construct) {}

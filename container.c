@@ -22,7 +22,7 @@ zval* focus_container_instance()
 zval* focus_container_get(zval *this_ptr, char *name, int len)
 {
 	zval *result;
-	MAKE_STD_ZVAL(result);
+	ALLOC_ZVAL(result);
 	ZVAL_STRING(result, name, 0);
 
 	return result;

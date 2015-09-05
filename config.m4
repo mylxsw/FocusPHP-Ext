@@ -44,7 +44,7 @@ if test "$PHP_FOCUSPHP" != "no"; then
 
   dnl # --with-focusphp -> check for lib and symbol presence
   dnl LIBNAME=focusphp # you may want to change this
-  dnl LIBSYMBOL=focusphp # you most likely want to change this 
+  dnl LIBSYMBOL=focusphp # you most likely want to change this
 
   dnl PHP_CHECK_LIBRARY($LIBNAME,$LIBSYMBOL,
   dnl [
@@ -58,10 +58,11 @@ if test "$PHP_FOCUSPHP" != "no"; then
   dnl
   PHP_SUBST(FOCUSPHP_SHARED_LIBADD)
 
-  PHP_NEW_EXTENSION(focusphp, 
+  PHP_NEW_EXTENSION(focusphp,
     focusphp.c \
     server.c \
     router.c \
     container.c \
-    router/not_found_router.c, $ext_shared)
+    router/not_found_router.c \
+    container/container.c, $ext_shared)
 fi

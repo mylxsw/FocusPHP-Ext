@@ -27,6 +27,7 @@
 #include "ext/standard/info.h"
 
 #include "php_focusphp.h"
+#include "container/container.h"
 #include "container.h"
 #include "router.h"
 #include "router/not_found_router.h"
@@ -100,9 +101,9 @@ PHP_METHOD(FOCUS_SERVER, run)
 }
 */
 
-/* The previous line is meant for vim and emacs, so it can correctly fold and 
-   unfold functions in source code. See the corresponding marks just before 
-   function definition, where the functions purpose is also documented. Please 
+/* The previous line is meant for vim and emacs, so it can correctly fold and
+   unfold functions in source code. See the corresponding marks just before
+   function definition, where the functions purpose is also documented. Please
    follow this convention for the convenience of others editing your code.
 */
 
@@ -133,7 +134,7 @@ int register_focus_interface()
  */
 PHP_MINIT_FUNCTION(focusphp)
 {
-	/* If you have INI entries, uncomment these lines 
+	/* If you have INI entries, uncomment these lines
 	REGISTER_INI_ENTRIES();
 	*/
 /*	zend_class_entry temp_focus_ce;
@@ -148,15 +149,16 @@ PHP_MINIT_FUNCTION(focusphp)
 	php_focusphp_server_entry = zend_register_internal_class(&temp_ce TSRMLS_CC);
 	zend_class_implements(php_focusphp_server_entry TSRMLS_CC, 1, php_focusphp_focus_interface);
 	zend_declare_class_constant_string(
-		php_focusphp_server_entry, 
-		"VERSION", 
-		sizeof("VERSION") - 1, 
+		php_focusphp_server_entry,
+		"VERSION",
+		sizeof("VERSION") - 1,
 		"1.0.0" TSRMLS_CC
 	);*/
 
 	register_focus_interface();
 
 	FOCUS_STARTUP(router);
+	FOCUS_STARTUP(container_container);
 	FOCUS_STARTUP(container);
 	FOCUS_STARTUP(not_found_router);
 

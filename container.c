@@ -1,6 +1,7 @@
 #include "php.h"
 
 #include "php_focusphp.h"
+#include "container/container.h"
 #include "container.h"
 
 zend_class_entry *focusphp_container_ce;
@@ -50,10 +51,18 @@ PHP_METHOD(container, has)
 
 }
 
+ZEND_BEGIN_ARG_INFO_EX(container_get_args, 0, 0, 1)
+    ZEND_ARG_INFO(0, id)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(container_has_args, 0, 0, 1)
+    ZEND_ARG_INFO(0, id)
+ZEND_END_ARG_INFO()
+
 
 const zend_function_entry focus_container_functions[] = {
-	PHP_ME(container, get, NULL, ZEND_ACC_PUBLIC)
-	PHP_ME(container, has, NULL, ZEND_ACC_PUBLIC)
+	PHP_ME(container, get, container_get_args, ZEND_ACC_PUBLIC)
+	PHP_ME(container, has, container_has_args, ZEND_ACC_PUBLIC)
 	PHP_ME(container, instance, NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
 	PHP_FE_END
 };
@@ -64,6 +73,7 @@ FOCUS_STARTUP_FUNCTION(container)
 	INIT_CLASS_ENTRY(temp_ce, "Focus\\Container", focus_container_functions);
 
 	focusphp_container_ce = zend_register_internal_class(&temp_ce TSRMLS_CC);
+	zend_class_implements(focusphp_container_ce TSRMLS_CC, 1, container_interface_ce);
 
 	zend_declare_property_null(focusphp_container_ce, ZEND_STRL("_instance"), ZEND_ACC_PROTECTED | ZEND_ACC_STATIC);
 

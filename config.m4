@@ -64,5 +64,6 @@ if test "$PHP_FOCUSPHP" != "no"; then
     router.c \
     container.c \
     router/not_found_router.c \
-    container/container.c, $ext_shared)
+    container/container.c \
+    container/basic_container.c, $ext_shared)
 fi

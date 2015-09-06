@@ -28,6 +28,7 @@
 
 #include "php_focusphp.h"
 #include "container/container.h"
+#include "container/basic_container.h"
 #include "container.h"
 #include "router.h"
 #include "router/not_found_router.h"
@@ -159,6 +160,7 @@ PHP_MINIT_FUNCTION(focusphp)
 
 	FOCUS_STARTUP(router);
 	FOCUS_STARTUP(container_container);
+	FOCUS_STARTUP(container_basic);
 	FOCUS_STARTUP(container);
 	FOCUS_STARTUP(not_found_router);
 

@@ -38,5 +38,36 @@ FOCUS_STARTUP_FUNCTION(container_basic)
     container_basic_ce = zend_register_internal_class(&temp_ce TSRMLS_CC);
     zend_class_implements(container_basic_ce TSRMLS_CC, 1, container_interface_ce);
 
+    zval *_classes;
+    MAKE_STD_ZVAL(_classes);
+    array_init(_classes);
+    zend_declare_property(container_basic_ce, ZEND_STRL("_classes"), _classes, ZEND_ACC_PRIVATE TSRMLS_CC);
+
+    zval *_lazy_classes;
+    MAKE_STD_ZVAL(_lazy_classes);
+    array_init(_lazy_classes);
+    zend_declare_property(container_basic_ce, ZEND_STRL("_lazy_classes"), _lazy_classes, ZEND_ACC_PRIVATE TSRMLS_CC);
+
+    zval *_system_classes;
+    MAKE_STD_ZVAL(_system_classes);
+    array_init(_system_classes);
+
+    add_assoc_string(_system_classes, "Focus\\Request\\Request", "Focus\\Request\\HttpRequest", 0);
+    add_assoc_string(_system_classes, "Focus\\Response\\Response", "Focus\\Response\\HttpResponse", 0);
+    add_assoc_string(_system_classes, "Focus\\Request\\Session", "Focus\\Request\\DefaultSession", 0);
+    add_assoc_string(_system_classes, "Focus\\Uri\\Uri", "Focus\\Uri\\DefaultUri", 0);
+    add_assoc_string(_system_classes, "Focus\\Router", "Focus\\Router", 0);
+    add_assoc_string(_system_classes, "Psr\\Log\\LoggerInterface", "Focus\\Log\\Logger", 0);
+
+    zval *config_default;
+    MAKE_STD_ZVAL(config_default);
+    array_init(config_default);
+    add_next_index_string(config_default, "Focus\\Config\\ArrayConfig", 0);
+    add_next_index_bool(config_default, 0);
+
+    add_assoc_zval(_system_classes, "Focus\\Config\\Config", config_default);
+
+    zend_declare_property(container_basic_ce, ZEND_STRL("_system_classes"), _system_classes, ZEND_ACC_PRIVATE | ZEND_ACC_STATIC);
+
     return SUCCESS;
 }
